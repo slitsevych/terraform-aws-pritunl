@@ -5,9 +5,10 @@
 - **public_subnet_id:** One of the public subnets to create the instance
 - **instance_type:** Instance type of the VPN box (t2.small is mostly enough)
 - **whitelist:** List of office IP addresses that you can SSH and non-VPN connected users can reach temporary profile download pages
-- **whitelist_http:** List of IP addresses that you can allow HTTP connections.
+- **whitelist_http:** List of IP addresses that you can allow HTTP connections for Let's Encrypt
 - **internal_cidrs:** List of CIDRs that will be whitelisted to access the VPN server internally.
 - **resource_name_prefix:** All the resources will be prefixed with the value of this variable
+- **volume_size:** instance volume size
 
 # Outputs
 
