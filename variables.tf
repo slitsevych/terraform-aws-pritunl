@@ -1,6 +1,12 @@
 variable "aws_key_name" {
   description = "SSH keypair name for the VPN instance"
+	# default = "mykey"
 }
+
+variable "aws_region" {
+  description = "The aws region"
+}
+
 
 variable "vpc_id" {
   description = "Which VPC VPN server will be created in"
@@ -22,7 +28,7 @@ variable "whitelist" {
 }
 
 variable "whitelist_http" {
-  description = "[List] Whitelist for HTTP port"
+  description = "[List] Whitelist for HTTP port to validate Let's Encrypt SSL"
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
@@ -42,3 +48,10 @@ variable "internal_cidrs" {
   type        = list(string)
   default     = ["10.0.0.0/16"]
 }
+
+variable "volume_size" {
+  description = "ec2 volume size"
+  default = 20
+}
+
+
