@@ -22,7 +22,7 @@ resource "aws_instance" "pritunl" {
   key_name      = var.aws_key_name
   user_data     = file("${path.module}/provision.sh")
 
-	root_block_device {
+  root_block_device {
     volume_size = var.volume_size
   }
 
@@ -32,8 +32,8 @@ resource "aws_instance" "pritunl" {
   ]
 
   subnet_id                   = var.public_subnet_id
-  associate_public_ip_address = true  
-  tags = merge( map("Name", format("%s-%s", var.resource_name_prefix, "vpn")), var.tags,)
+  associate_public_ip_address = true
+  tags                        = merge(map("Name", format("%s-%s", var.resource_name_prefix, "vpn")), var.tags, )
 }
 
 resource "aws_eip" "pritunl" {
