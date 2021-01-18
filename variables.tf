@@ -1,12 +1,7 @@
 variable "aws_key_name" {
   description = "SSH keypair name for the VPN instance"
-	# default = "mykey"
+  # default = "mykey"
 }
-
-variable "aws_region" {
-  description = "The aws region"
-}
-
 
 variable "vpc_id" {
   description = "Which VPC VPN server will be created in"
@@ -51,7 +46,7 @@ variable "internal_cidrs" {
 
 variable "volume_size" {
   description = "ec2 volume size"
-  default = 20
+  default     = 20
 }
 
 
