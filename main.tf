@@ -1,11 +1,9 @@
-data "aws_caller_identity" "current" {}
-
 data "aws_ami" "oracle" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["OL8.2-x86_64-HVM-2020-05-22"]
+    values = ["OL8.3-x86_64-HVM-2020-12-10"]
   }
 
   filter {
