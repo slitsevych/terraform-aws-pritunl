@@ -38,7 +38,7 @@ systemctl stop firewalld
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A
 gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A > key.tmp; sudo rpm --import key.tmp; rm -f key.tmp
-sudo yum -y install pritunl mongodb-org
+sudo yum -y install pritunl mongodb-org wireguard-tools
 /usr/lib/pritunl/bin/python -m pip install 'mongo[srv]' dnspython
 systemctl start mongod pritunl
 systemctl enable mongod pritunl
