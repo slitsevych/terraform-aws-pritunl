@@ -21,9 +21,9 @@ resource "aws_instance" "pritunl" {
   user_data     = file("${path.module}/provision.sh")
 
   root_block_device {
-    volume_size = var.volume_size
-    tags = merge(map("Name", format("%s-%s", var.resource_name_prefix, "vpn")), var.tags, )
-    delete_on_termination =  false # we want' to keep our old HD for VPN - better to remove it manually later
+    volume_size           = var.volume_size
+    tags                  = merge(map("Name", format("%s-%s", var.resource_name_prefix, "vpn")), var.tags, )
+    delete_on_termination = false # we want' to keep our old HD for VPN - better to remove it manually later
   }
 
   vpc_security_group_ids = [
@@ -39,4 +39,5 @@ resource "aws_instance" "pritunl" {
 resource "aws_eip" "pritunl" {
   instance = aws_instance.pritunl.id
   vpc      = true
+  tags     = merge(map("Name", format("%s-%s", var.resource_name_prefix, "vpn")), var.tags, )
 }
