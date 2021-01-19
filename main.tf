@@ -22,6 +22,8 @@ resource "aws_instance" "pritunl" {
 
   root_block_device {
     volume_size = var.volume_size
+    tags = merge(map("Name", format("%s-%s", var.resource_name_prefix, "vpn")), var.tags, )
+    delete_on_termination =  false # we want' to keep our old HD for VPN - better to remove it manually later
   }
 
   vpc_security_group_ids = [

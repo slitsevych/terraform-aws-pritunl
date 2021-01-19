@@ -22,7 +22,7 @@ EOF
 tee /etc/yum.repos.d/pritunl.repo << EOF
 [pritunl]
 name=Pritunl Repository
-baseurl=https://repo.pritunl.com/stable/yum/centos/8/
+baseurl=https://repo.pritunl.com/stable/yum/oraclelinux/8/
 gpgcheck=1
 enabled=1
 EOF
@@ -31,9 +31,10 @@ EOF
 systemctl disable firewalld
 systemctl stop firewalld
 
-sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
-sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/sysconfig/selinux
-setenforce 0
+# TODO: check if selinux support really works
+# sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+# sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/sysconfig/selinux
+# setenforce 0
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A
 gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A > key.tmp; sudo rpm --import key.tmp; rm -f key.tmp
