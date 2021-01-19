@@ -10,7 +10,7 @@ echo "* soft nofile 64000" >> /etc/security/limits.conf
 echo "root hard nofile 64000" >> /etc/security/limits.conf
 echo "root soft nofile 64000" >> /etc/security/limits.conf
 
-tee /etc/yum.repos.d/mongodb-org-4.2.repo << EOF
+tee /etc/yum.repos.d/mongodb-org-4.4.repo << EOF
 [mongodb-org-4.4]
 name=MongoDB Repository
 baseurl=https://repo.mongodb.org/yum/redhat/8/mongodb-org/4.4/x86_64/
@@ -35,12 +35,61 @@ systemctl stop firewalld
 # sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 # sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/sysconfig/selinux
 # setenforce 0
+
+cd /tmp
+cat > mongodb_cgroup_memory.te <<EOF
+module mongodb_cgroup_memory 1.0;
+
+require {
+    type cgroup_t;
+    type mongod_t;
+    class dir search;
+    class file { getattr open read };
+}
+
+#============= mongod_t ==============
+allow mongod_t cgroup_t:dir search;
+allow mongod_t cgroup_t:file { getattr open read };
+EOF
+checkmodule -M -m -o mongodb_cgroup_memory.mod mongodb_cgroup_memory.te
+semodule_package -o mongodb_cgroup_memory.pp -m mongodb_cgroup_memory.mod
+sudo semodule -i mongodb_cgroup_memory.pp
+
+cat > mongodb_proc_net.te <<EOF
+module mongodb_proc_net 1.0;
+
+require {
+    type proc_net_t;
+    type mongod_t;
+    class file { open read };
+}
+
+#============= mongod_t ==============
+allow mongod_t proc_net_t:file { open read };
+EOF
+
+checkmodule -M -m -o mongodb_proc_net.mod mongodb_proc_net.te
+semodule_package -o mongodb_proc_net.pp -m mongodb_proc_net.mod
+sudo semodule -i mongodb_proc_net.pp
+
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A
 gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A > key.tmp; sudo rpm --import key.tmp; rm -f key.tmp
 sudo yum -y install pritunl mongodb-org wireguard-tools
 /usr/lib/pritunl/bin/python -m pip install 'mongo[srv]' dnspython
-systemctl start mongod pritunl
+
+# systemctl start mongod pritunl
+
+cat <<EOF >/etc/sysconfig/iptables
+# sample configuration for iptables service
+# you can edit this manually or use system-config-firewall
+# please do not ask us to add additional ports/services to this default configuration
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+EOF
+
 systemctl enable mongod pritunl
 
 cat <<EOF > /etc/logrotate.d/pritunl
@@ -54,3 +103,5 @@ cat <<EOF > /etc/logrotate.d/pritunl
   notifempty
 }
 EOF
+
+reboot
