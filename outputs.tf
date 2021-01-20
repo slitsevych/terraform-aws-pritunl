@@ -7,7 +7,7 @@ output "pritunl_elastic_ip" {
 }
 
 output "security_group_ids" {
-  value = ["${aws_security_group.pritunl.id}", "${aws_security_group.allow_from_office.id}"]
+  value = [aws_security_group.pritunl.id, aws_security_group.allow_from_office.id]
 }
 
 output "main_security_group_id" {
