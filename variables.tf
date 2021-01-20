@@ -4,10 +4,12 @@ variable "aws_key_name" {
 }
 
 variable "vpc_id" {
+  type        = string
   description = "Which VPC VPN server will be created in"
 }
 
 variable "public_subnet_id" {
+  type        = string
   description = "One of the public subnet id for the VPN instance"
 }
 
@@ -30,6 +32,7 @@ variable "whitelist_http" {
 
 variable "tags" {
   description = "A map of tags to add to all resources"
+  type        = map(any)
   default     = {}
 }
 
@@ -45,6 +48,7 @@ variable "internal_cidrs" {
 }
 
 variable "volume_size" {
+  type        = number
   description = "ec2 volume size"
   default     = 20
 }
