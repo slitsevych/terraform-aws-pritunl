@@ -12,12 +12,12 @@ resource "aws_security_group" "pritunl" {
   }
 
 	# For Let's Encrypt validation
-	ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
-    cidr_blocks = var.whitelist_http
-  }
+	#ingress {
+    #from_port = 80
+    #to_port   = 80
+    #protocol  = "tcp"
+    #cidr_blocks = var.whitelist_http
+  #}
 
   # HTTPS access
   ingress {

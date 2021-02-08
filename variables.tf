@@ -24,11 +24,11 @@ variable "whitelist" {
   type        = list(string)
 }
 
-variable "whitelist_http" {
-  description = "[List] Whitelist for HTTP port to validate Let's Encrypt SSL"
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
-}
+#variable "whitelist_http" {
+  #description = "[List] Whitelist for HTTP port to validate Let's Encrypt SSL"
+  #type        = list(string)
+  #default     = ["0.0.0.0/0"]
+#}
 
 variable "tags" {
   description = "A map of tags to add to all resources"
