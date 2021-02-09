@@ -54,3 +54,8 @@ variable "volume_size" {
 }
 
 
+variable "iam_instance_profile" {
+  type = string
+  description = "iam_instance_profile - must exist before!"
+  default = ""
+} 
