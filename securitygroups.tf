@@ -19,12 +19,12 @@ resource "aws_security_group" "pritunl" {
     #cidr_blocks = var.whitelist_http
   #}
 
-  # HTTPS access
+  # HTTPS access is required for PIN auth
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = var.internal_cidrs
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # VPN WAN access
