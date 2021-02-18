@@ -92,6 +92,8 @@ cat <<EOF >/etc/sysconfig/iptables
 EOF
 
 systemctl enable mongod pritunl
+# thing above basically uses all resources - eats memory and makes VPN UNSTABLE!
+systemctl disable dnf-makecache.timer
 
 cat <<EOF > /etc/logrotate.d/pritunl
 /var/log/mongodb/*.log {

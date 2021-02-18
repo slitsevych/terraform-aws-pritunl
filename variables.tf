@@ -44,7 +44,7 @@ variable "resource_name_prefix" {
 variable "internal_cidrs" {
   description = "[List] IP CIDRs to whitelist in the pritunl's security group"
   type        = list(string)
-  default     = ["10.0.0.0/16"]
+  default     = []
 }
 
 variable "volume_size" {

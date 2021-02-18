@@ -25,10 +25,16 @@ resource "aws_instance" "pritunl" {
     tags                  = merge(map("Name", format("%s-%s", var.resource_name_prefix, "vpn")), var.tags, )
     delete_on_termination = false # we want' to keep our old HD for VPN - better to remove it manually later
   }
+  
+  # When user-data changes I want to preserve instance as I can make changes on the machine or I can taint the resource if needed.
+  lifecycle {
+    ignore_changes = [user_data]
+  }
+
 
   vpc_security_group_ids = [
     aws_security_group.pritunl.id,
-    aws_security_group.allow_from_office.id,
+    # aws_security_group.allow_from_office.id,
   ]
 
   subnet_id                   = var.public_subnet_id
