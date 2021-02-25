@@ -16,7 +16,7 @@ variable "public_subnet_id" {
 variable "instance_type" {
   description = "Instance type for VPN Box"
   type        = string
-  default     = "t2.micro"
+  default     = "t2.small"
 }
 
 variable "whitelist" {
@@ -57,5 +57,5 @@ variable "volume_size" {
 variable "iam_instance_profile" {
   type = string
   description = "iam_instance_profile - must exist before!"
-  default = ""
-} 
+  default = null
+}

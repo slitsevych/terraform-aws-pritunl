@@ -23,17 +23,13 @@ provider "aws" {
 }
 
 module "pritunl" {
-  source = "github.com/poush/terraform-aws-pritunl?ref=1.0.0"
+  source = "github.com/evildotuk/terraform-aws-pritunl"
 
   aws_key_name         = "aws_key_name"
   vpc_id               = "${module.vpc.vpc_id}"
   public_subnet_id     = "${module.vpc.public_subnets[1]}"
-  instance_type        = "t2.micro"
+  instance_type        = "t2.small"
   resource_name_prefix = "my-pritunl"
-
-  whitelist = [
-    "<Your IP>/32",
-  ]
 }
 ```
 
