@@ -91,8 +91,10 @@ cat <<EOF >/etc/sysconfig/iptables
 :OUTPUT ACCEPT [0:0]
 EOF
 
-systemctl enable mongod pritunl
-# thing above basically uses all resources - eats memory and makes VPN UNSTABLE!
+echo -e 'server time1.google.com iburst\nserver time2.google.com iburst\nserver time3.google.com iburst\nserver time4.google.com iburst' >> /etc/chrony.conf
+
+systemctl enable mongod pritunl chronyd
+# thing below basically uses all resources - eats memory and makes VPN UNSTABLE!
 systemctl disable dnf-makecache.timer
 
 cat <<EOF > /etc/logrotate.d/pritunl
