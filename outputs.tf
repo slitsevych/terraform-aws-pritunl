@@ -7,16 +7,12 @@ output "pritunl_elastic_ip" {
 }
 
 output "security_group_ids" {
-  value = [aws_security_group.pritunl.id] #, aws_security_group.allow_from_office.id]
+  value = [aws_security_group.pritunl.id]
 }
 
 output "main_security_group_id" {
   value = aws_security_group.pritunl.id
 }
-
-# output "office_security_group_id" {
-#   value = aws_security_group.allow_from_office.id
-# }
 
 output "aws_instance_id" {
   value = aws_instance.pritunl.id
@@ -25,3 +21,8 @@ output "aws_instance_id" {
 output "aws_ami_id" {
   value = data.aws_ami.oracle.id
 }
+
+output "arn" {
+  value = aws_instance.pritunl.arn
+}
+

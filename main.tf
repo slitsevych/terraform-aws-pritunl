@@ -31,10 +31,8 @@ resource "aws_instance" "pritunl" {
     ignore_changes = [user_data]
   }
 
-
   vpc_security_group_ids = [
-    aws_security_group.pritunl.id,
-    # aws_security_group.allow_from_office.id,
+    aws_security_group.pritunl.id
   ]
 
   subnet_id                   = var.public_subnet_id
