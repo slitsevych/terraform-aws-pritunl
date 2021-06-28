@@ -31,9 +31,10 @@ resource "aws_instance" "pritunl" {
     ignore_changes = [user_data]
   }
 
-  vpc_security_group_ids = [
-    aws_security_group.pritunl.id
-  ]
+  vpc_security_group_ids = compact([
+    aws_security_group.pritunl.id,
+    var.additional_security_group
+  ])
 
   subnet_id                   = var.public_subnet_id
   associate_public_ip_address = true
