@@ -3,7 +3,7 @@ data "aws_ami" "oracle" {
 
   filter {
     name   = "name"
-    values = ["OL8.3-x86_64-HVM-2020-12-10"]
+    values = ["OL8.4-x86_64-HVM-2021-05-28"]
   }
 
   filter {
@@ -28,7 +28,7 @@ resource "aws_instance" "pritunl" {
 
   # When user-data changes I want to preserve instance as I can make changes on the machine or I can taint the resource if needed.
   lifecycle {
-    ignore_changes = [user_data]
+    ignore_changes = [user_data, ami]
   }
 
   vpc_security_group_ids = compact([
