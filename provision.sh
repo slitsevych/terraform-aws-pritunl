@@ -31,11 +31,6 @@ EOF
 systemctl disable firewalld
 systemctl stop firewalld
 
-# TODO: check if selinux support really works
-# sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
-# sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/sysconfig/selinux
-# setenforce 0
-
 cd /tmp
 cat > mongodb_cgroup_memory.te <<EOF
 module mongodb_cgroup_memory 1.0;
@@ -77,14 +72,9 @@ rpm -i https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd6
 gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A
 gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A > key.tmp; sudo rpm --import key.tmp; rm -f key.tmp
 sudo yum -y install pritunl mongodb-org wireguard-tools
-/usr/lib/pritunl/bin/python -m pip install 'mongo[srv]' dnspython
-
-# systemctl start mongod pritunl
+# /usr/lib/pritunl/bin/python -m pip install 'mongo[srv]' dnspython
 
 cat <<EOF >/etc/sysconfig/iptables
-# sample configuration for iptables service
-# you can edit this manually or use system-config-firewall
-# please do not ask us to add additional ports/services to this default configuration
 *filter
 :INPUT ACCEPT [0:0]
 :FORWARD ACCEPT [0:0]

@@ -50,7 +50,7 @@ variable "iam_instance_profile" {
 }
 
 variable "additional_security_group" {
-  type = string
-  description = "Additional security (created outside of module)"
-  default = ""
+  type = list
+  description = "Additional security (created outside of module) group(s)"
+  default = []
 }

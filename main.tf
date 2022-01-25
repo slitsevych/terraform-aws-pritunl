@@ -23,18 +23,17 @@ resource "aws_instance" "pritunl" {
   root_block_device {
     volume_size           = var.volume_size
     tags                  = merge(tomap({ "Name" = format("%s-%s", var.resource_name_prefix, "vpn") }), var.tags, )
-    delete_on_termination = false # we want' to keep our old HD for VPN - better to remove it manually later
+    delete_on_termination = false
   }
 
-  # When user-data changes I want to preserve instance as I can make changes on the machine or I can taint the resource if needed.
   lifecycle {
     ignore_changes = [user_data, ami]
   }
 
-  vpc_security_group_ids = compact([
+  vpc_security_group_ids = compact(flatten([
     aws_security_group.pritunl.id,
     var.additional_security_group
-  ])
+  ]))
 
   subnet_id                   = var.public_subnet_id
   associate_public_ip_address = true
