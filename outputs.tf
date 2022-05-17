@@ -2,7 +2,7 @@ output "pritunl_private_ip" {
   value = aws_instance.pritunl.private_ip
 }
 
-output "pritunl_elastic_ip" {
+output "pritunl_public_ip" {
   value = aws_eip.pritunl.public_ip
 }
 
