@@ -42,6 +42,5 @@ resource "aws_instance" "pritunl" {
 
 resource "aws_eip" "pritunl" {
   instance = aws_instance.pritunl.id
-  vpc      = true
   tags     = merge(tomap({ "Name" = format("%s-%s", var.resource_name_prefix, "vpn") }), var.tags, )
 }
