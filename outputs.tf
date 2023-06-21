@@ -26,3 +26,7 @@ output "arn" {
   value = aws_instance.pritunl.arn
 }
 
+output "dns_record" {
+  value = aws_route53_record.vpn.fqdn
+}
+

@@ -1,6 +1,9 @@
 variable "aws_key_name" {
   description = "SSH keypair name for the VPN instance"
-  # default = "mykey"
+}
+
+variable "domain_name" {
+  description = "Domain name to lookup for A record"
 }
 
 variable "vpc_id" {
@@ -27,7 +30,7 @@ variable "tags" {
 
 variable "resource_name_prefix" {
   description = "All the resources will be prefixed with the value of this variable"
-  default     = "pritunl"
+  default     = "vpn"
 }
 
 variable "internal_cidrs" {
