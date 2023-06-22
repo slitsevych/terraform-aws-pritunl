@@ -12,7 +12,7 @@ resource "aws_security_group" "pritunl" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = "${length(var.internal_cidrs) == 0 ? [data.aws_vpc.selected.cidr_block] : var.internal_cidrs}"
+    cidr_blocks = "${var.designated_ip}/32"
   }
 
 	# For Let's Encrypt validation
@@ -33,8 +33,8 @@ resource "aws_security_group" "pritunl" {
 
   # VPN WAN access
   ingress {
-    from_port   = 10000
-    to_port     = 19999
+    from_port   = var.udp_port
+    to_port     = var.udp_port
     protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }

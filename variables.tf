@@ -7,7 +7,15 @@ variable "domain_name" {
 }
 
 variable "subdomain_prefix" {
-  description = "Domain name to lookup for A record"
+  description = "Prefix for route 53 subdomain"
+}
+
+variable "udp_port" {
+  description = "port for pritunl UDP server between 10000 and 19999"
+}
+
+variable "designated_ip" {
+  description = "IP for initial ssh connection"
 }
 
 variable "vpc_id" {
