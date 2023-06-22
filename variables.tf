@@ -6,6 +6,10 @@ variable "domain_name" {
   description = "Domain name to lookup for A record"
 }
 
+variable "subdomain_prefix" {
+  description = "Domain name to lookup for A record"
+}
+
 variable "vpc_id" {
   type        = string
   description = "Which VPC VPN server will be created in"
