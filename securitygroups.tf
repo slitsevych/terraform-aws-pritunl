@@ -12,7 +12,7 @@ resource "aws_security_group" "pritunl" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = "${var.designated_ip}/32"
+    cidr_blocks = ["${var.designated_ip}/32"]
   }
 
 	# For Let's Encrypt validation
