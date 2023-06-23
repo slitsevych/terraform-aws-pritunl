@@ -19,7 +19,7 @@ resource "aws_instance" "pritunl" {
   instance_type        = var.instance_type
   key_name             = var.aws_key_name
   user_data            = file("${path.module}/provision.sh")
-  iam_instance_profile = var.iam_instance_profile
+  iam_instance_profile = aws_iam_instance_profile.ssm_profile.name
   root_block_device {
     volume_size           = var.volume_size
     tags                  = merge(tomap({ "Name" = format("%s-%s", var.resource_name_prefix, "vpn") }), var.tags, )
