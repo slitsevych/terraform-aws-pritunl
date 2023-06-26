@@ -8,4 +8,10 @@ resource "aws_route53_record" "vpn" {
   type    = "A"
   ttl     = 300
   records = [aws_instance.pritunl.public_ip]
+
+  lifecycle {
+    ignore_changes = [
+      zone_id
+    ]
+  }
 }
