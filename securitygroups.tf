@@ -4,7 +4,7 @@ data "aws_vpc" "selected" {
 
 resource "aws_security_group" "pritunl" {
   name        = "${var.resource_name_prefix}-vpn"
-  description = "${var.resource_name_prefix}-vpn"
+  description = "Allow necessary connections for pritunl vpn"
   vpc_id      = var.vpc_id
 
   # SSH access
@@ -56,7 +56,7 @@ resource "aws_security_group" "pritunl" {
   }
 
   tags = merge(
-    tomap({"Name" = format("%s-%s", var.resource_name_prefix, "vpn")}),
+    tomap({"Name" = "pritunl-vpn"}),
     var.tags,
   )
 }
