@@ -5,13 +5,12 @@ export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/aw
 echo "Pritunl Installing"
 
 sudo yum -y update
+# RHEL and Oracle Linux EPEL
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm oracle-epel-release-el8
 sudo yum -y install oracle-epel-release-el8
 sudo yum-config-manager --enable ol8_developer_EPEL
-
-echo "* hard nofile 64000" >> /etc/security/limits.conf
-echo "* soft nofile 64000" >> /etc/security/limits.conf
-echo "root hard nofile 64000" >> /etc/security/limits.conf
-echo "root soft nofile 64000" >> /etc/security/limits.conf
+# SSM Agent
+sudo rpm -i https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_arm64/amazon-ssm-agent.rpm
 
 sudo tee /etc/yum.repos.d/mongodb-org-6.0.repo << EOF
 [mongodb-org-6.0]
@@ -69,8 +68,9 @@ checkmodule -M -m -o mongodb_proc_net.mod mongodb_proc_net.te
 semodule_package -o mongodb_proc_net.pp -m mongodb_proc_net.mod
 sudo semodule -i mongodb_proc_net.pp
 
-yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-rpm -i https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+sudo yum install -y mongodb-org
+sudo systemctl start mongod
+sudo systemctl enable mongod
 
 # Import signing key from keyserver
 gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A
@@ -79,7 +79,15 @@ gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A > key.tmp; sudo rp
 sudo rpm --import https://raw.githubusercontent.com/pritunl/pgp/master/pritunl_repo_pub.asc
 # Install updated openvpn package from pritunl
 sudo yum --allowerasing install pritunl-openvpn
-sudo yum -y install pritunl mongodb-org wireguard-tools
+sudo yum -y install pritunl wireguard-tools
+sudo systemctl daemon-reload
+sudo systemctl start pritunl
+sudo systemctl enable pritunl
+
+echo "* hard nofile 64000" >> /etc/security/limits.conf
+echo "* soft nofile 64000" >> /etc/security/limits.conf
+echo "root hard nofile 64000" >> /etc/security/limits.conf
+echo "root soft nofile 64000" >> /etc/security/limits.conf
 
 cat <<EOF >/etc/sysconfig/iptables
 *filter
@@ -88,10 +96,9 @@ cat <<EOF >/etc/sysconfig/iptables
 :OUTPUT ACCEPT [0:0]
 EOF
 
+yum install -y chrony
 echo -e 'server time1.google.com iburst\nserver time2.google.com iburst\nserver time3.google.com iburst\nserver time4.google.com iburst' >> /etc/chrony.conf
-
-systemctl enable mongod pritunl chronyd
-# thing below basically uses all resources - eats memory and makes VPN UNSTABLE!
+systemctl enable chronyd
 systemctl disable dnf-makecache.timer
 
 cat <<EOF > /etc/logrotate.d/pritunl
