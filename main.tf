@@ -3,7 +3,7 @@ data "aws_ami" "oracle" {
 
   filter {
     name   = "name"
-    values = ["OL8.5-x86_64-HVM-*"]
+    values = ["OL8.8-x86_64-HVM-*"]
   }
 
   filter {
@@ -15,11 +15,12 @@ data "aws_ami" "oracle" {
 }
 
 resource "aws_instance" "pritunl" {
-  ami                  = data.aws_ami.oracle.id
+  ami                  = var.platform == "amd64" ? data.aws_ami.oracle.id : var.custom_ami_id
   instance_type        = var.instance_type
   key_name             = var.aws_key_name
-  user_data            = file("${path.module}/provision.sh")
-  iam_instance_profile = aws_iam_instance_profile.ssm_profile.name
+  user_data            = var.platform == "amd64" ? file("${path.module}/scripts/provision_amd64.sh") : file("${path.module}/scripts/provision_arm64.sh")
+  iam_instance_profile = var.create_iam_role == true ? aws_iam_instance_profile.ssm_profile.name : var.iam_instance_profile
+
   root_block_device {
     volume_size           = var.volume_size
     tags                  = merge(tomap({ "Name" = format("%s-%s", var.resource_name_prefix, "vpn") }), var.tags, )

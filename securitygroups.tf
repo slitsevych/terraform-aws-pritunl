@@ -15,11 +15,11 @@ resource "aws_security_group" "pritunl" {
     cidr_blocks = ["${var.designated_ip}/32"]
   }
 
-	# For Let's Encrypt validation
-	ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
+  # For Let's Encrypt validation
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -44,7 +44,7 @@ resource "aws_security_group" "pritunl" {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
-    cidr_blocks = "${length(var.internal_cidrs) == 0 ? [data.aws_vpc.selected.cidr_block] : var.internal_cidrs}"
+    cidr_blocks = length(var.internal_cidrs) == 0 ? [data.aws_vpc.selected.cidr_block] : var.internal_cidrs
   }
 
   # outbound internet access
@@ -56,7 +56,7 @@ resource "aws_security_group" "pritunl" {
   }
 
   tags = merge(
-    tomap({"Name" = "pritunl-vpn"}),
+    tomap({ "Name" = "pritunl-vpn" }),
     var.tags,
   )
 }

@@ -8,14 +8,34 @@ variable "domain_name" {
 
 variable "subdomain_prefix" {
   description = "Prefix for route 53 subdomain"
+  default     = "vpn"
+}
+
+variable "platform" {
+  description = "Platform: amd64 or arm64"
+  default     = "amd64"
 }
 
 variable "udp_port" {
   description = "port for pritunl UDP server between 10000 and 19999"
+  default     = 13403
+}
+
+variable "custom_ami_id" {
+  description = "custom AMI for ARM platform: should be Oracle 8.8"
+  type        = string
+  default     = ""
 }
 
 variable "designated_ip" {
   description = "IP for initial ssh connection"
+  default     = ""
+}
+
+variable "create_iam_role" {
+  description = "Should the module create IAM SSM role or not"
+  type        = bool
+  default     = true
 }
 
 variable "vpc_id" {
@@ -31,7 +51,7 @@ variable "public_subnet_id" {
 variable "instance_type" {
   description = "Instance type for VPN Box"
   type        = string
-  default     = "t2.small"
+  default     = "t3a.small"
 }
 
 variable "tags" {
@@ -57,15 +77,14 @@ variable "volume_size" {
   default     = 20
 }
 
-
 variable "iam_instance_profile" {
-  type = string
+  type        = string
   description = "iam_instance_profile - must exist before!"
-  default = null
+  default     = ""
 }
 
 variable "additional_security_group" {
-  type = list
+  type        = list(any)
   description = "Additional security (created outside of module) group(s)"
-  default = []
+  default     = []
 }
