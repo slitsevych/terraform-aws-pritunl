@@ -3,7 +3,7 @@ data "aws_ami" "oracle" {
 
   filter {
     name   = "name"
-    values = ["OL8.8-x86_64-HVM-*"]
+    values = ["OL8.7-x86_64-HVM-*"]
   }
 
   filter {
