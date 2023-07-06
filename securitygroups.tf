@@ -1,3 +1,7 @@
+data "aws_vpc" "selected" {
+  id = var.vpc_id
+}
+
 resource "aws_security_group" "pritunl" {
   name        = "${var.resource_name_prefix}-vpn"
   description = "Allow necessary connections for pritunl vpn"
