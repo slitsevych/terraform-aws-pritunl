@@ -68,7 +68,7 @@ variable "internal_cidrs" {
 variable "volume_size" {
   type        = number
   description = "ec2 volume size"
-  default     = 20
+  default     = 30
 }
 
 variable "iam_instance_profile" {

@@ -1,7 +1,7 @@
 #!/bin/bash -xe
 exec > >(tee /var/log/pritunl-install-data.log|logger -t user-data -s 2>/dev/console) 2>&1
 
-export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/aws/bin:/root/bin
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/aws/bin:/root/bin
 echo "Pritunl Installing"
 
 sudo yum -y update
@@ -69,8 +69,7 @@ semodule_package -o mongodb_proc_net.pp -m mongodb_proc_net.mod
 sudo semodule -i mongodb_proc_net.pp
 
 sudo yum install -y mongodb-org
-sudo systemctl start mongod
-sudo systemctl enable mongod
+sudo systemctl enable mongod --now
 
 # Import signing key from keyserver
 gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A
