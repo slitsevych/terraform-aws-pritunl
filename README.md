@@ -65,6 +65,11 @@ With these steps, you'll now have Oracle Linux running on your AWS Graviton proc
 
 Make sure to create AMI out of the instance you've just configured and supply the AMI ID to the module for further Pritunl installation.
 
+Pritunl version: 1.32.3571.58
+Python version: 3.9.16
+Golang version: 1.20.5
+MongoDB: 6.0
+
 ### Module Usage
 
 Standard example for amd64 platform:
