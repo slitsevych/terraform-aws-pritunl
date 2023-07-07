@@ -53,13 +53,14 @@ rm -f go1.20.5.linux-arm64.tar.gz
 
 tee -a ~/.bashrc << EOF
 export PATH=\$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/aws/bin:/root/bin:/usr/local/go/bin
-export GOPATH=\$HOME/go
+export GOPATH=/root/go
 EOF
 tee -a /home/rocky/.bashrc << EOF
 export PATH=\$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/aws/bin:/root/bin:/usr/local/go/bin
 export GOPATH=\$HOME/go
 EOF
 source ~/.bashrc
+export GOPATH=/root/go
 
 go env -w GO111MODULE=on
 GOPROXY=direct go install github.com/pritunl/pritunl-web@latest

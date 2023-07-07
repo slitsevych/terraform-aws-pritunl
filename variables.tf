@@ -11,6 +11,22 @@ variable "subdomain_prefix" {
   default     = "vpn"
 }
 
+variable "vpc_id" {
+  type        = string
+  description = "Which VPC VPN server will be created in"
+}
+
+variable "public_subnet_id" {
+  type        = string
+  description = "One of the public subnet id for the VPN instance"
+}
+
+variable "instance_type" {
+  description = "Instance type for VPN Box"
+  type        = string
+  default     = "t3a.small"
+}
+
 variable "platform" {
   description = "Platform: amd64 or arm64"
   default     = "amd64"
@@ -28,24 +44,8 @@ variable "custom_ami_id" {
 }
 
 variable "designated_ip" {
-  description = "IP for initial ssh connection"
+  description = "Whitelist of IP for initial ssh connection"
   default     = ""
-}
-
-variable "vpc_id" {
-  type        = string
-  description = "Which VPC VPN server will be created in"
-}
-
-variable "public_subnet_id" {
-  type        = string
-  description = "One of the public subnet id for the VPN instance"
-}
-
-variable "instance_type" {
-  description = "Instance type for VPN Box"
-  type        = string
-  default     = "t3a.small"
 }
 
 variable "tags" {
@@ -73,7 +73,7 @@ variable "volume_size" {
 
 variable "iam_instance_profile" {
   type        = string
-  description = "iam_instance_profile - must exist before!"
+  description = "Name of iam_instance_profile to assign to EC2 instance"
   default     = ""
 }
 
