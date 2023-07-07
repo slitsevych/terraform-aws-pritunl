@@ -1,5 +1,5 @@
 #!/bin/bash -xe
-export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/aws/bin:/root/bin
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/aws/bin:/root/bin:/usr/local/go/bin
 echo "Pritunl Installing"
 
 sudo yum -y update
@@ -53,18 +53,16 @@ rm -f go1.20.5.linux-arm64.tar.gz
 
 tee -a ~/.bashrc << EOF
 export PATH=\$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/aws/bin:/root/bin:/usr/local/go/bin
-export GOPATH=/root/go
+export HOME=/root
 EOF
 tee -a /home/rocky/.bashrc << EOF
 export PATH=\$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/aws/bin:/root/bin:/usr/local/go/bin
-export GOPATH=\$HOME/go
 EOF
-source ~/.bashrc
-export GOPATH=/root/go
 
-go env -w GO111MODULE=on
-GOPROXY=direct go install github.com/pritunl/pritunl-web@latest
-GOPROXY=direct go install github.com/pritunl/pritunl-dns@latest
+export HOME=/root
+
+GO111MODULE=on GOPROXY=direct go install github.com/pritunl/pritunl-web@latest 
+GO111MODULE=on GOPROXY=direct go install github.com/pritunl/pritunl-dns@latest
 sudo cp -f ~/go/bin/pritunl-dns /usr/bin/pritunl-dns && cp -f ~/go/bin/pritunl-web /usr/bin/pritunl-web
 
 export VERSION=1.32.3571.58
