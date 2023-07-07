@@ -33,7 +33,7 @@ sudo systemctl enable --now mongod
 
 # Install dependencies
 sudo yum -y groupinstall 'Development Tools'
-sudo yum -y install nano openssl-devel bzip2-devel libffi libffi-devel sqlite-devel xz-devel \
+sudo yum -y install ipset iptables nano openssl-devel bzip2-devel libffi libffi-devel sqlite-devel xz-devel \
       zlib-devel gcc git openvpn openssl net-tools iptables psmisc ca-certificates \
       selinux-policy selinux-policy-devel wget nano tar policycoreutils-python-utils \
       bridge-utils
