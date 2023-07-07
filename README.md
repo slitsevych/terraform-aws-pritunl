@@ -30,12 +30,13 @@
 
 Module supports custom compilation of Pritunl on ARM64 (using `provision_arm64.sh` script).
 However, for that it will need a compatible AMI which should be based on Oracle Linux 8.
-I've used the following article to prepate such an image: [Oracle Linux on AWS Graviton2/3](https://www.linkedin.com/pulse/oracle-linux-aws-graviton23-orlando-andico)
+I've used the following article to prepare such an image: [Oracle Linux on AWS Graviton2/3](https://www.linkedin.com/pulse/oracle-linux-aws-graviton23-orlando-andico)
+
 Basically you would need to:
 
-- boot a [Rocky Linux 8 ARM64 AMI](https://aws.amazon.com/marketplace/pp/prodview-uzg6o44ep3ugw) from the AWS Marketplace
+- Boot a [Rocky Linux 8 ARM64 AMI](https://aws.amazon.com/marketplace/pp/prodview-uzg6o44ep3ugw) from the AWS Marketplace
 - SSH into the instance using the private key, as per standard EC2 practice, with the user being "rocky"
-- obtain the `centos2ol.sh` script from the Oracle Github page page via the command:
+- Obtain the `centos2ol.sh` script from the Oracle Github page page via the command:
   
 ```bash
 curl -O https://raw.githubusercontent.com/oracle/centos2ol/main/centos2ol.sh
@@ -47,7 +48,7 @@ curl -O https://raw.githubusercontent.com/oracle/centos2ol/main/centos2ol.sh
 sudo bash centos2ol.sh
 ```
 
-- wait for the process to complete before rebooting with `/sbin/reboot`
+- Wait for the process to complete before rebooting with `/sbin/reboot`
 - Once the instance is up and running, SSH back in and validate that the upgrade was successful by executing the command:
 
 ```bash
@@ -61,7 +62,8 @@ curl http://169.254.169.254/latest/meta-data/instance-type
 ```
 
 With these steps, you'll now have Oracle Linux running on your AWS Graviton processor.
-Make sure to create AMI at this stage and supply the AMI Id to the module for further Pritunl installation.
+
+Make sure to create AMI out of the instance you've just configured and supply the AMI ID to the module for further Pritunl installation.
 
 ### Module Usage
 
