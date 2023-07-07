@@ -19,7 +19,7 @@ resource "aws_instance" "pritunl" {
   instance_type        = var.instance_type
   key_name             = var.aws_key_name
   user_data            = var.platform == "amd64" ? file("${path.module}/scripts/provision_amd64.sh") : file("${path.module}/scripts/provision_arm64.sh")
-  iam_instance_profile = var.create_iam_role == true ? aws_iam_instance_profile.ssm_profile.name : var.iam_instance_profile
+  iam_instance_profile = length(var.iam_instance_profile) > 0 ? var.iam_instance_profile : aws_iam_instance_profile.ssm_profile.name
 
   root_block_device {
     volume_size           = var.volume_size

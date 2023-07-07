@@ -32,12 +32,6 @@ variable "designated_ip" {
   default     = ""
 }
 
-variable "create_iam_role" {
-  description = "Should the module create IAM SSM role or not"
-  type        = bool
-  default     = true
-}
-
 variable "vpc_id" {
   type        = string
   description = "Which VPC VPN server will be created in"
