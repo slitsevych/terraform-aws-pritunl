@@ -9,11 +9,12 @@
 - **volume_size:** Instance EBS volume size (default is 30GB)
 - **domain_name:** Domain name to lookup for A record
 - **subdomain_prefix:** Prefix for route 53 subdomain (default is `vpn`)
-- **udp_port:** Port for pritunl UDP server between 10000 and 19999 (default is `13403`)
+- **ovpn_udp_port:** Port for pritunl OpenVPN UDP connections (default is `13403`)
+- **ovpn_udp_port:** Port for pritunl Wireguard UDP connections (default is `15403`)
 - **additional_security_group:** Additional security (created outside of module) group(s)
 - **iam_instance_profile:** Name of iam_instance_profile to assign to EC2 instance (will be created if not supplied)
 - **tags:** A map of tags to add to all resources
-- **designated_ip:** Whitelist this IP for initial ssh connection
+- **whitelist_ip:** Whitelist this IP for initial ssh connection
 - **platform:** Choose platform type: `amd64` (default) or `arm64`; arm64 will require you to indicate an additional `custom_ami_id` variable
 - **custom_ami_id:** custom AMI for ARM platform: should be Oracle 8.8 (see notes below)
 
@@ -66,8 +67,11 @@ With these steps, you'll now have Oracle Linux running on your AWS Graviton proc
 Make sure to create AMI out of the instance you've just configured and supply the AMI ID to the module for further Pritunl installation.
 
 Pritunl version: 1.32.3571.58
+
 Python version: 3.9.16
+
 Golang version: 1.20.5
+
 MongoDB: 6.0
 
 ### Module Usage

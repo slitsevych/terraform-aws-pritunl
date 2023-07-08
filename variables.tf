@@ -32,9 +32,14 @@ variable "platform" {
   default     = "amd64"
 }
 
-variable "udp_port" {
-  description = "port for pritunl UDP server between 10000 and 19999"
+variable "ovpn_udp_port" {
+  description = "port for pritunl OpenVPN UDP between 10000 and 19999"
   default     = 13403
+}
+
+variable "wireguard_udp_port" {
+  description = "port for pritunl OpenVPN UDP between 10000 and 19999"
+  default     = 15403
 }
 
 variable "custom_ami_id" {
@@ -43,7 +48,7 @@ variable "custom_ami_id" {
   default     = ""
 }
 
-variable "designated_ip" {
+variable "whitelist_ip" {
   description = "Whitelist of IP for initial ssh connection"
   default     = ""
 }
