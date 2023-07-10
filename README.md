@@ -135,3 +135,70 @@ sudo pritunl default-password
 ```
 
 Once done, you can proceed with configuring the server.
+
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_eip.pritunl](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip) | resource |
+| [aws_iam_instance_profile.ssm_profile](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_role.ec2_ssm_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.ssm_policy_attach](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_instance.pritunl](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
+| [aws_route53_record.vpn](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.vpn_private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_security_group.pritunl](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_ami.oracle](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_route53_zone.private_zone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
+| [aws_route53_zone.public_zone](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
+| [aws_vpc.selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_additional_security_group"></a> [additional\_security\_group](#input\_additional\_security\_group) | Additional security (created outside of module) group(s) | `list(any)` | `[]` | no |
+| <a name="input_aws_key_name"></a> [aws\_key\_name](#input\_aws\_key\_name) | SSH keypair name for the VPN instance | `any` | n/a | yes |
+| <a name="input_custom_ami_id"></a> [custom\_ami\_id](#input\_custom\_ami\_id) | custom AMI for ARM platform: should be Oracle 8.8 | `string` | `""` | no |
+| <a name="input_domain_name"></a> [domain\_name](#input\_domain\_name) | Domain name to lookup for A record | `any` | n/a | yes |
+| <a name="input_iam_instance_profile"></a> [iam\_instance\_profile](#input\_iam\_instance\_profile) | Name of iam\_instance\_profile to assign to EC2 instance | `string` | `""` | no |
+| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Instance type for VPN Box | `string` | `"t3a.small"` | no |
+| <a name="input_internal_cidrs"></a> [internal\_cidrs](#input\_internal\_cidrs) | [List] IP CIDRs to whitelist in the pritunl's security group | `list(string)` | `[]` | no |
+| <a name="input_ovpn_udp_port"></a> [ovpn\_udp\_port](#input\_ovpn\_udp\_port) | port for pritunl OpenVPN UDP between 10000 and 19999 | `number` | `13403` | no |
+| <a name="input_platform"></a> [platform](#input\_platform) | Platform: amd64 or arm64 | `string` | `"amd64"` | no |
+| <a name="input_public_subnet_id"></a> [public\_subnet\_id](#input\_public\_subnet\_id) | One of the public subnet id for the VPN instance | `string` | n/a | yes |
+| <a name="input_resource_name_prefix"></a> [resource\_name\_prefix](#input\_resource\_name\_prefix) | All the resources will be prefixed with the value of this variable | `string` | `"vpn"` | no |
+| <a name="input_subdomain_prefix"></a> [subdomain\_prefix](#input\_subdomain\_prefix) | Prefix for route 53 subdomain | `string` | `"vpn"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to all resources | `map(any)` | `{}` | no |
+| <a name="input_volume_size"></a> [volume\_size](#input\_volume\_size) | ec2 volume size | `number` | `30` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | Which VPC VPN server will be created in | `string` | n/a | yes |
+| <a name="input_whitelist_ip"></a> [whitelist\_ip](#input\_whitelist\_ip) | Whitelist of IP for initial ssh connection | `string` | `""` | no |
+| <a name="input_wireguard_udp_port"></a> [wireguard\_udp\_port](#input\_wireguard\_udp\_port) | port for pritunl OpenVPN UDP between 10000 and 19999 | `number` | `15403` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_aws_ami_id"></a> [aws\_ami\_id](#output\_aws\_ami\_id) | n/a |
+| <a name="output_aws_instance_id"></a> [aws\_instance\_id](#output\_aws\_instance\_id) | n/a |
+| <a name="output_main_security_group_id"></a> [main\_security\_group\_id](#output\_main\_security\_group\_id) | n/a |
+| <a name="output_pritunl_dns_alias"></a> [pritunl\_dns\_alias](#output\_pritunl\_dns\_alias) | n/a |
+| <a name="output_pritunl_private_ip"></a> [pritunl\_private\_ip](#output\_pritunl\_private\_ip) | n/a |
+| <a name="output_pritunl_public_ip"></a> [pritunl\_public\_ip](#output\_pritunl\_public\_ip) | n/a |
+<!-- END_TF_DOCS -->
