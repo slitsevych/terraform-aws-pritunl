@@ -78,7 +78,7 @@ MongoDB: 6.0
 
 Standard example for amd64 platform:
 
-```bash
+```hcl
 provider "aws" {
   region  = "us-east-2"
 }
@@ -92,13 +92,13 @@ module "pritunl" {
   instance_type        = "t3a.small"
   resource_name_prefix = "pritunl"
   domain_name          = "example.com"
-  designated_ip        = "1.2.3.4"
+  whitelist_ip         = "1.2.3.4"
 }
 ```
 
 Example for arm64 platform:
 
-```bash
+```hcl
 provider "aws" {
   region  = "us-east-2"
 }
@@ -115,7 +115,9 @@ module "pritunl" {
   resource_name_prefix = "pritunl-arm"
   subdomain_prefix     = "pritunl-arm"
   domain_name          = "example.com"
-  designated_ip        = "1.2.3.4"
+  whitelist_ip         = "1.2.3.4"
+  ovpn_udp_port        = 15414
+  wireguard_udp_port   = 15415
   iam_instance_profile = "ec2-ssm-role"  # example of providing existing IAM instance profile
 }
 ```
