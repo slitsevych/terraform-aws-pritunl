@@ -1,14 +1,19 @@
 variable "aws_key_name" {
+  type        = string
   description = "SSH keypair name for the VPN instance"
+  default     = ""
 }
 
-variable "domain_name" {
-  description = "Domain name to lookup for A record"
+variable "public_domain_name" {
+  type        = string
+  description = "Public domain name to lookup for A record"
+  default     = ""
 }
 
-variable "subdomain_prefix" {
-  description = "Prefix for route 53 subdomain"
-  default     = "vpn"
+variable "private_domain_name" {
+  type        = string
+  description = "Private domain name to lookup for A record"
+  default     = ""
 }
 
 variable "vpc_id" {
@@ -29,15 +34,23 @@ variable "instance_type" {
 
 variable "platform" {
   description = "Platform: amd64 or arm64"
+  type        = string
   default     = "amd64"
+
+  validation {
+    condition     = contains(["amd64", "arm64"], var.platform)
+    error_message = "Valid values for the platform variable are amd64 or arm64"
+  }
 }
 
 variable "ovpn_udp_port" {
+  type        = number
   description = "port for pritunl OpenVPN UDP between 10000 and 19999"
   default     = 13403
 }
 
 variable "wireguard_udp_port" {
+  type        = number
   description = "port for pritunl OpenVPN UDP between 10000 and 19999"
   default     = 15403
 }
@@ -49,6 +62,7 @@ variable "custom_ami_id" {
 }
 
 variable "whitelist_ip" {
+  type        = string
   description = "Whitelist of IP for initial ssh connection"
   default     = ""
 }
@@ -60,14 +74,9 @@ variable "tags" {
 }
 
 variable "resource_name_prefix" {
+  type        = string
   description = "All the resources will be prefixed with the value of this variable"
   default     = "vpn"
-}
-
-variable "internal_cidrs" {
-  description = "[List] IP CIDRs to whitelist in the pritunl's security group"
-  type        = list(string)
-  default     = []
 }
 
 variable "volume_size" {
@@ -76,7 +85,7 @@ variable "volume_size" {
   default     = 30
 }
 
-variable "iam_instance_profile" {
+variable "aws_iam_instance_profile" {
   type        = string
   description = "Name of iam_instance_profile to assign to EC2 instance"
   default     = ""

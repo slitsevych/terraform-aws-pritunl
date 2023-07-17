@@ -14,11 +14,7 @@ output "aws_instance_id" {
   value = aws_instance.pritunl.id
 }
 
-output "aws_ami_id" {
-  value = data.aws_ami.oracle.id
-}
-
 output "pritunl_dns_alias" {
-  value = aws_route53_record.vpn.fqdn
+  value = one(aws_route53_record.vpn[*].fqdn)
 }
 
