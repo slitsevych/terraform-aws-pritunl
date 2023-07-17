@@ -61,7 +61,7 @@ resource "aws_security_group" "pritunl" {
 }
 
 resource "aws_security_group_rule" "ssh" {
-  count = var.whitelist_ip == "" ? 0 : 1
+  count = var.whitelist_ip == "" ? 1 : 0
 
   type              = "ingress"
   from_port         = 22
