@@ -38,6 +38,19 @@ resource "aws_security_group" "pritunl" {
     }
   }
 
+  # SSH access conditional
+  dynamic "ingress" {
+    for_each = length(var.whitelist_ip) > 0 ? [local.whitelist_ip] : []
+
+    content {
+      description = "ssh whitelist ip ${var.whitelist_ip} access"
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = ingress.value
+    }
+  }
+
   # ICMP
   ingress {
     from_port   = -1
@@ -58,15 +71,4 @@ resource "aws_security_group" "pritunl" {
     tomap({ "Name" = "pritunl-vpn" }),
     var.tags
   )
-}
-
-resource "aws_security_group_rule" "ssh" {
-  count = length(var.whitelist_ip) == 0 ? 0 : 1
-
-  type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  cidr_blocks       = local.whitelist_ip
-  security_group_id = aws_security_group.pritunl.id
 }
