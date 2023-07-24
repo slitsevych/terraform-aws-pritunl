@@ -30,6 +30,15 @@ resource "aws_iam_role_policy_attachment" "ssm_policy_attach" {
   depends_on = [aws_iam_role.ec2_ssm_role]
 }
 
+# resource "aws_iam_role_policy_attachment" "vpc_policy_attach" {
+#   count = var.aws_iam_instance_profile == "" ? 1 : 0
+
+#   role       = aws_iam_role.ec2_ssm_role[0].name
+#   policy_arn = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
+
+#   depends_on = [aws_iam_role.ec2_ssm_role]
+# }
+
 resource "aws_iam_instance_profile" "ssm_profile" {
   count = var.aws_iam_instance_profile == "" ? 1 : 0
 

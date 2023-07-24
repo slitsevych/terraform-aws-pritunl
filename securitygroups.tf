@@ -6,6 +6,7 @@ locals {
   whitelist_ip   = ["${var.whitelist_ip}/32"]
   inbound_ports  = [80, 443]
   pritunl_ports  = [var.ovpn_udp_port, var.wireguard_udp_port]
+  # aws_ports      = [500, 4500, 9790]
   cidr_all_block = ["0.0.0.0/0"]
 }
 
@@ -37,6 +38,18 @@ resource "aws_security_group" "pritunl" {
       cidr_blocks = local.cidr_all_block
     }
   }
+
+  # AWS IPSec access
+  # dynamic "ingress" {
+  #   for_each = local.aws_ports
+  #   content {
+  #     description = "pritunl aws udp port ${ingress.value} access"
+  #     from_port   = ingress.value
+  #     to_port     = ingress.value
+  #     protocol    = "udp"
+  #     cidr_blocks = local.cidr_all_block
+  #   }
+  # }
 
   # SSH access conditional
   dynamic "ingress" {

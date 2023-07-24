@@ -17,6 +17,7 @@ data "aws_ami" "oracle" {
 resource "aws_instance" "pritunl" {
   ami                  = var.platform == "amd64" ? data.aws_ami.oracle.id : var.custom_ami_id
   instance_type        = var.instance_type
+  source_dest_check    = false
   key_name             = var.aws_key_name != "" ? var.aws_key_name : null
   user_data            = var.platform == "amd64" ? file("${path.module}/scripts/provision_amd64.sh") : file("${path.module}/scripts/provision_arm64.sh")
   iam_instance_profile = var.aws_iam_instance_profile == "" ? aws_iam_instance_profile.ssm_profile[0].name : var.aws_iam_instance_profile

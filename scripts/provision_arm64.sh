@@ -63,7 +63,9 @@ export HOME=/root
 
 GO111MODULE=on GOPROXY=direct go install github.com/pritunl/pritunl-web@latest 
 GO111MODULE=on GOPROXY=direct go install github.com/pritunl/pritunl-dns@latest
+GO111MODULE=on GOPROXY=direct go install github.com/pritunl/pritunl-link@latest
 sudo cp -f ~/go/bin/pritunl-dns /usr/bin/pritunl-dns && cp -f ~/go/bin/pritunl-web /usr/bin/pritunl-web
+sudo cp -f ~/go/bin/pritunl-link /usr/bin/pritunl-link
 
 export VERSION=1.32.3571.58
 
