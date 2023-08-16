@@ -29,13 +29,12 @@ gpgkey=https://www.mongodb.org/static/pgp/server-6.0.asc
 EOF
 
 sudo yum install -y mongodb-database-tools mongodb-org
-sudo systemctl enable --now mongod
 
 # Install dependencies
 sudo yum -y groupinstall 'Development Tools'
 sudo yum -y install ipset iptables nano openssl-devel bzip2-devel libffi libffi-devel sqlite-devel xz-devel \
       zlib-devel gcc git openvpn openssl net-tools iptables psmisc ca-certificates \
-      selinux-policy selinux-policy-devel wget nano tar policycoreutils-python-utils \
+      selinux-policy selinux-policy-devel selinux-policy-targeted wget nano tar policycoreutils-python-utils \
       bridge-utils wireguard-tools
 
 # Install python
@@ -120,44 +119,35 @@ cat <<EOF > /etc/logrotate.d/pritunl
 }
 EOF
 
-
 cd /tmp
-cat > mongodb_cgroup_memory.te <<EOF
-module mongodb_cgroup_memory 1.0;
-
-require {
-    type cgroup_t;
-    type mongod_t;
-    class dir search;
-    class file { getattr open read };
-}
-
-#============= mongod_t ==============
-allow mongod_t cgroup_t:dir search;
-allow mongod_t cgroup_t:file { getattr open read };
+git clone https://github.com/mongodb/mongodb-selinux
+cd mongodb-selinux/selinux 
+cat > selinux_nfc.patch <<EOF
+--- mongodb.te.orig	2023-03-27 15:50:01.215714756 +0200
++++ mongodb.te	2023-03-27 15:50:57.510360567 +0200
+@@ -65,6 +65,16 @@
+ allow mongod_t var_run_t:dir { open read getattr lock search ioctl add_name remove_name write };
+ type_transition mongod_t var_run_t:dir mongod_runtime_t;
+ 
++require {
++	type var_lib_nfs_t;
++	type autofs_t;
++	type mongod_t;
++	class dir search;
++}
++#============= mongod_t ==============
++allow mongod_t autofs_t:dir search;
++allow mongod_t var_lib_nfs_t:dir search;
++
+ # this is required to create mongodb-XXXXX.sock files
+ files_rw_generic_tmp_dir(mongod_t)
+ fs_manage_tmpfs_sockets(mongod_t)
 EOF
-checkmodule -M -m -o mongodb_cgroup_memory.mod mongodb_cgroup_memory.te
-semodule_package -o mongodb_cgroup_memory.pp -m mongodb_cgroup_memory.mod
-sudo semodule -i mongodb_cgroup_memory.pp
+git apply selinux_nfc.patch && cd ..
+make
+sudo make install
 
-cat > mongodb_proc_net.te <<EOF
-module mongodb_proc_net 1.0;
-
-require {
-    type proc_net_t;
-    type mongod_t;
-    class file { open read };
-}
-
-#============= mongod_t ==============
-allow mongod_t proc_net_t:file { open read };
-EOF
-
-checkmodule -M -m -o mongodb_proc_net.mod mongodb_proc_net.te
-semodule_package -o mongodb_proc_net.pp -m mongodb_proc_net.mod
-sudo semodule -i mongodb_proc_net.pp
-
-sudo systemctl restart mongod
+sudo systemctl enable --now mongod
 
 sudo systemctl daemon-reload
 sudo systemctl enable pritunl --now
